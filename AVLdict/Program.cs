@@ -79,21 +79,28 @@ namespace AVLdict
 
 
             
-            String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
+            //String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
 
-            resolveStrings(words_unprocessed); //all the magic happens here
+            //resolveStrings(words_unprocessed); //all the magic happens here
 
             dict.Add("4");
-            dict.Add("3");
             dict.Add("2");
+            dict.Add("7");
             dict.Add("1");
-            dict.Remove("1");
-            //dict.Add("4");
-            //dict.Add("3");
-            //dict.Add("5");
-            //dict.Add("6");
-            //dict.Add("7");
+            dict.Add("3");
+            dict.Add("5");
+            dict.Add("9");
+            dict.Add("6");
             dict.PrintTree(dict.Root);
+
+            //dict.Add("1");
+            //dict.Add("11");
+            //dict.Add("23");
+            //dict.Add("4");
+            //dict.Add("5");
+            //dict.Add("423");
+            //dict.Add("6");
+            //dict.Add("12");
         }
     }
 }

@@ -86,14 +86,31 @@ namespace AVLdict
                     }
                     return true;
                 }
-                // non-root case
-                NodeInPlace = NodeToRemove;
-                
+                // non-root case; no action needed
+                //NodeInPlace = NodeToRemove;
             }
             // 2 children
             else
             {
-
+                // find replacement; RLLLL... or LRRRR...
+                NodeInPlace = NodeToRemove;
+                if (NodeToRemove.Right != null)
+                {
+                    NodeToRemove = NodeToRemove.Right;
+                    while (NodeToRemove.Left != null)
+                    {
+                        NodeToRemove = NodeToRemove.Left;
+                    }
+                }
+                else
+                {
+                    NodeToRemove = NodeToRemove.Left;
+                    while (NodeToRemove.Right != null)
+                    {
+                        NodeToRemove = NodeToRemove.Right;
+                    }
+                }
+                NodeInPlace.Word = NodeToRemove.Word;
             }
 
             // replace
@@ -172,25 +189,25 @@ namespace AVLdict
             string[] Tree = new string[Constants.MaxTreeDisplay+1];
             int level = MapTree(root, Tree, 1);
 
-            Console.WriteLine(level);
+            //Console.WriteLine(level);
 
             int power = Constants.MaxTreeDisplayPower;
             while ((level >> power) == 0) --power;
 
-            Console.WriteLine(power);
+            //Console.WriteLine(power);
             level = ((level >> power) << power);
             int spaces = level / 2;
 
             for (int i = 1; i < level; i *= 2)
             {
-                for (int k = 0; k < (level / i) / 2; k++) { Console.Write(" "); }
+                for (int k = 0; k < (level / i / 2) - 1; k++) { Console.Write(" "); }
 
                 for (int j = i; j < i * 2; j++)
                 {
-                    for (int k = 0; k < level / i / 2; k++) { Console.Write("  "); }
-
                     if (Tree[j] == null) Tree[j] = "x";
                     Console.Write(Tree[j] + " ");
+
+                    for (int k = 0; k < (level / i / 2) - 1; k++) { Console.Write("  "); }
                 }
                 spaces /= 2;
                 Console.WriteLine();
@@ -205,8 +222,9 @@ namespace AVLdict
 
             visualArray[level] = n.Word;
             level *= 2;
-            maxlevel = Math.Max(level, MapTree(n.Left, visualArray, level));
-            maxlevel = Math.Max(level, MapTree(n.Right, visualArray, level + 1));
+            maxlevel = Math.Max(level, maxlevel);
+            maxlevel = Math.Max(maxlevel, MapTree(n.Left, visualArray, level));
+            maxlevel = Math.Max(maxlevel, MapTree(n.Right, visualArray, level + 1));
 
             return maxlevel;
         }
