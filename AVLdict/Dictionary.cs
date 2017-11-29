@@ -50,6 +50,22 @@ namespace AVLdict
             }
         }
 
+        public void PrintTree(Node root)
+        {
+            Console.WriteLine("START");
+            if (root == null)
+            {
+                Console.WriteLine(" ");
+                Console.WriteLine("END");
+                return;
+            }
 
+            Console.WriteLine(root.Word);
+            Node left= root.Left, right = root.Right;
+            while (left != null && right != null)
+            {
+                break;
+            }
+        }
     }
 }
