@@ -55,6 +55,40 @@ namespace AVLdict
             }
         }
 
+        public void Remove(string word)
+        {
+            Node NodetoRemove = Find(word);
+        }
+
+        public bool IsInTree()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Node Find(string word)
+        {
+            return FindInTree(Root, word);
+        }
+
+        private Node FindInTree(Node n, string word)
+        {
+            if (n == null) return null;
+
+            if (n.Word.CompareTo(word) == 0)
+            {
+                return n;
+            }
+
+            if (n.Word.CompareTo(word) < 0)
+            {
+                return FindInTree(n.Left, word);
+            }
+            else
+            {
+                return FindInTree(n.Right, word);
+            }
+        }
+
         public void PrintTree(Node root)
         {
             string[] Tree = new string[Constants.MaxTreeDisplay+1];
