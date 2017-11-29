@@ -8,10 +8,10 @@ namespace AVLdict
 {
     class Node
     {
-        public Node Parent { get; private set; }
-        public Node Left { get; private set; }
-        public Node Right { get; private set; }
-        public string Word { get; private set; }
+        public Node Parent { get; set; }
+        public Node Left { get; set; }
+        public Node Right { get; set; }
+        public string Word { get; set; }
 
         public Node()
         {

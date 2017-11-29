@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AVLdict
 {
-    class Dictionary : Node
+    class Dictionary
     {
         public Node Root { get; private set; }
 
@@ -29,8 +29,27 @@ namespace AVLdict
                 if (parent.Left == null)
                 {
                     parent.Left = newNode;
+                    newNode.Parent = parent;
+                }
+                else
+                {
+                    AddToTree(parent.Left, newNode);
+                }
+            }
+            else
+            {
+                if (parent.Right == null)
+                {
+                    parent.Right = newNode;
+                    newNode.Parent = parent;
+                }
+                else
+                {
+                    AddToTree(parent.Right, newNode);
                 }
             }
         }
+
+
     }
 }
