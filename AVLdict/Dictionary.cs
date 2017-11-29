@@ -60,9 +60,17 @@ namespace AVLdict
             Node NodetoRemove = Find(word);
         }
 
-        public bool IsInTree()
+        public bool IsInTree(string word)
         {
-            throw new NotImplementedException();
+            Node n = Find(word);
+            if (n == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private Node Find(string word)
