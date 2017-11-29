@@ -57,6 +57,7 @@ namespace AVLdict
                          * same contents as argument (Node.content==argument)
                         then delete those nodes
                         */
+                        dict.Remove(argument);
                     }
                     else if (command == 'S') //the find duplicate strings command
                     {
@@ -70,7 +71,7 @@ namespace AVLdict
                     {
                         /*count nodes that start with argument and return them
                          eg. argument="ko" for dict[] = "kot", "kot", "kat" returns 2*/
-                        Console.WriteLine("L Command placeholder");
+                        Console.WriteLine(dict.CountSubstr(argument));
                     }
 
                 }
