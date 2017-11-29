@@ -63,7 +63,7 @@ namespace AVLdict
                         /*find nodes that have the same contents as "argument" and
                         if any found print TAK if not print NIE*/
 
-                        if (false /*remove this my friend*/) Console.WriteLine("TAK"); //placeholder
+                        if (dict.IsInTree(argument)) Console.WriteLine("TAK");
                         else Console.WriteLine("NIE");
                     }
                     else if (command == 'L') //the find substring in string command 
