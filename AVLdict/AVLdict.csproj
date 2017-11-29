@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8CF73D41-4097-4D1F-AD3A-51063B924A63}</ProjectGuid>
+    <ProjectGuid>{C5790B07-997E-4D54-8C6F-3014EB588C3E}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>AVLdict</RootNamespace>
     <AssemblyName>AVLdict</AssemblyName>
