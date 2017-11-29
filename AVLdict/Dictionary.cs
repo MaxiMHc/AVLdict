@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 
 namespace AVLdict
 {
-    class Program
+    class Dictionary
     {
-        static void Main(string[] args)
-        {
-
-        }
     }
 }
