@@ -6,7 +6,7 @@
         {
             "label": "build",
             "type": "shell",
-            "command": "csc d:\\dev15k\\AVLdict\\AVLdict\\Program.cs & Program",
+            "command": "csc d:\\dev15k\\AVLdict\\AVLdict\\Program.cs",
             "problemMatcher": [
                 "$msCompile"
             ]
