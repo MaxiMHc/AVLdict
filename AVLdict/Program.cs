@@ -83,13 +83,16 @@ namespace AVLdict
 
             resolveStrings(words_unprocessed); //all the magic happens here
 
-            dict.Add("2");
-            dict.Add("1");
             dict.Add("4");
             dict.Add("3");
-            dict.Add("5");
-            dict.Add("6");
-            dict.Add("7");
+            dict.Add("2");
+            dict.Add("1");
+            dict.Remove("1");
+            //dict.Add("4");
+            //dict.Add("3");
+            //dict.Add("5");
+            //dict.Add("6");
+            //dict.Add("7");
             dict.PrintTree(dict.Root);
         }
     }
