@@ -10,7 +10,7 @@ namespace AVLdict
     {
         static void Main(string[] args)
         {
-            int tab = System.IO.File.ReadAllLines("in1.txt");
+            String[] tab = System.IO.File.ReadAllLines("in1.txt");
         }
     }
 }
