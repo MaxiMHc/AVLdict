@@ -55,9 +55,79 @@ namespace AVLdict
             }
         }
 
-        public void Remove(string word)
+        public bool Remove(string word)
         {
-            Node NodetoRemove = Find(word);
+            Node NodeToRemove = Find(word);
+            Node NodeInPlace;
+
+            // not found
+            if (NodeToRemove == null)
+            {
+                return false;
+            }
+            // deleting node with less than 2 children
+            if(NodeToRemove.Left == null || NodeToRemove.Right == null)
+            {
+                // root cases
+                if (NodeToRemove.Parent == null)
+                {
+                    if(NodeToRemove.Left == null && NodeToRemove.Right == null)
+                    {
+                        Root = null;
+                        return true;
+                    }
+                    if (NodeToRemove.Left == null)
+                    {
+                        Root = NodeToRemove.Right;
+                    }
+                    else
+                    {
+                        Root = NodeToRemove.Left;
+                    }
+                    return true;
+                }
+                // non-root case
+                NodeInPlace = NodeToRemove;
+                
+            }
+            // 2 children
+            else
+            {
+
+            }
+
+            // replace
+            if(NodeToRemove.Right != null)
+            {
+                NodeInPlace = NodeToRemove.Right;
+            }
+            else
+            {
+                NodeInPlace = NodeToRemove.Left;
+            }
+            if (NodeInPlace != null)
+            {
+                NodeInPlace.Parent = NodeToRemove.Parent;
+            }
+            // if node removed is root
+            if(NodeToRemove.Parent == null)
+            {
+                Root = NodeInPlace;
+            }
+            // if it is not root
+            else
+            {
+                if (NodeToRemove == NodeToRemove.Parent.Left)
+                {
+                    NodeToRemove.Parent.Left = NodeInPlace;
+                }
+                else
+                {
+                    NodeToRemove.Parent.Right = NodeInPlace;
+                }
+            }
+
+            return true;
         }
 
         public bool IsInTree(string word)
@@ -87,7 +157,7 @@ namespace AVLdict
                 return n;
             }
 
-            if (n.Word.CompareTo(word) < 0)
+            if (n.Word.CompareTo(word) > 0)
             {
                 return FindInTree(n.Left, word);
             }

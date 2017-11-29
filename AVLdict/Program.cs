@@ -61,13 +61,16 @@ namespace AVLdict
 
             String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt"); //TODO: uncomment once initial input is done
 
-            dict.Add("2");
-            dict.Add("1");
             dict.Add("4");
             dict.Add("3");
-            dict.Add("5");
-            dict.Add("6");
-            dict.Add("7");
+            dict.Add("2");
+            dict.Add("1");
+            dict.Remove("1");
+            //dict.Add("4");
+            //dict.Add("3");
+            //dict.Add("5");
+            //dict.Add("6");
+            //dict.Add("7");
             dict.PrintTree(dict.Root);
         }
     }
