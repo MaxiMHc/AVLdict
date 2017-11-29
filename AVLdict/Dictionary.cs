@@ -167,6 +167,44 @@ namespace AVLdict
             }
         }
 
+        public int CountSubstr(String substr)
+        {
+            return CountSubstringsInTree(substr);
+        }
+
+        private int CountSubstringsInTree(String substr) //FindSubstringInTree is modified FindInTree. Counts nodes that begin with substr
+        {
+            int SubstringsFoundSoFar = 0;
+            Node currentNode = Root;
+            bool currentNodePrecedesSubstr = currentNode.Word.CompareTo(substr) > 0;//true if current node's word is before substr in the alphabetical order
+            bool currentNodeContainsSubstr = currentNode.Word.Contains(substr);
+            
+            
+            //find most optimal place to start
+            while (currentNodePrecedesSubstr)
+            {
+                currentNodePrecedesSubstr = currentNode.Word.CompareTo(substr) > 0;
+                currentNodeContainsSubstr = currentNode.Word.Contains(substr);
+                currentNode = currentNode.Right; //if the current node's word is before the substring in the alphabetical order, we got to the node whose word is closer to substr
+            }
+            //after the loop has finished, we're definitely on a node whose word is after the substring in the alphabetical order
+
+            if (currentNode.Parent.Word.Contains(substr)) SubstringsFoundSoFar++;
+
+
+            void FindSubstringInTree(Node n) { //my function now TriHard. searches for substring from the optimal node to start and stops when it definitely wont encounter the substring anymore
+                if (n == null) return;
+                if (currentNode.Word.Contains(substr)) SubstringsFoundSoFar++;
+                if (currentNode.Word.CompareTo(substr) < 0) return; //you definitely wont find the substring past this point, so we end it here
+
+                FindSubstringInTree(currentNode.Left);
+                FindSubstringInTree(currentNode.Right);
+            }
+
+            FindSubstringInTree(currentNode);
+            return SubstringsFoundSoFar;
+        }
+
         public void PrintTree(Node root)
         {
             string[] Tree = new string[Constants.MaxTreeDisplay+1];
