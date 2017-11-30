@@ -1,4 +1,4 @@
-﻿//#define VERBOSE
+﻿#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -94,6 +94,7 @@ namespace AVLdict
             dict.Add("5");
             dict.Add("9");
             dict.Add("6");
+            Console.WriteLine(dict.CountSubstr("ma"));
             dict.PrintTree(dict.Root);
 
             //dict.Add("1");

@@ -82,10 +82,12 @@ namespace AVLdict
                     if (NodeToRemove.Left == null)
                     {
                         Root = NodeToRemove.Right;
+                        NodeToRemove.Right.Parent = null;
                     }
                     else
                     {
                         Root = NodeToRemove.Left;
+                        NodeToRemove.Left.Parent = null;
                     }
                     return true;
                 }
