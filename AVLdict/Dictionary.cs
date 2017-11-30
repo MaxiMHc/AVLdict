@@ -216,7 +216,9 @@ namespace AVLdict
 
 
             void FindSubstringInTree(Node n) { //my function now TriHard. searches for substring from the optimal node to start and stops when it definitely wont encounter the substring anymore
+                String CurrentNodePrefixCutout;
                 if (n == null) return;
+                if (currentNode.Word.Length >= substr.Length) currentNode.Word.Substring(0, substr.Length - 2);
                 if (currentNode.Word.Contains(substr)) SubstringsFoundSoFar++;
                 if (currentNode.Word.CompareTo(substr) >= 0) return; //you definitely wont find the substring past this point, so we end it here
 
