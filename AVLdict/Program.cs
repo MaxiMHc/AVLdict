@@ -30,7 +30,9 @@ namespace AVLdict
                     return input.Substring(2, input.Length-2);
                 }
 
+#if VERBOSE
                 Console.WriteLine(raw_strings[0]);
+#endif
                 int numberOfStrings = int.Parse(raw_strings[0]);
 
                 for (int i = 1; i <= numberOfStrings; i++) //we start from 1 because there's a number on raw_strings[0], and here we want only words
@@ -39,12 +41,12 @@ namespace AVLdict
                     char command = getCommand(inputline); //this is "A", the [command]
                     String argument = snipCommand(inputline); //this is "elephant", the [word]
 
-                #if(VERBOSE)
+#if (VERBOSE)
                     Console.WriteLine(argument); //debug
-                #endif                    
-                    
-                    
-                    
+#endif
+
+
+
                     /*-------COMMANDS (CALLS TO DICT ARE MADE HERE)-----------------------------------------------------------------------*/
 
                     if (command == 'W') //the add command
@@ -80,9 +82,9 @@ namespace AVLdict
 
 
             
-            //String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
+            String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
 
-            //resolveStrings(words_unprocessed); //all the magic happens here
+            resolveStrings(words_unprocessed); //all the magic happens here
 
             dict.Add("4");
             dict.Add("2");
