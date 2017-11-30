@@ -1,4 +1,4 @@
-﻿#define VERBOSE
+﻿//#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -220,12 +220,17 @@ namespace AVLdict
             void FindSubstringInTree(Node n) { //my function now TriHard. searches for substring from the optimal node to start and stops when it definitely wont encounter the substring anymore
                 String CurrentNodePrefixCutout;
                 if (n == null) return;
-                CurrentNodePrefixCutout=n.Word.Substring(0, substr.Length);
-                if (CurrentNodePrefixCutout==null) return;
-                Console.WriteLine(CurrentNodePrefixCutout);
-                Console.WriteLine(substr);
-                if (CurrentNodePrefixCutout == substr) { SubstringsFoundSoFar++; }
-                if (n.Word.CompareTo(substr) > 0) return; //you definitely wont find the substring past this point, so we end it here
+                if (n.Word.Length >= substr.Length)
+                {
+                    CurrentNodePrefixCutout = n.Word.Substring(0, substr.Length);
+                    if (CurrentNodePrefixCutout == null) return;
+#if VERBOSE
+                    Console.WriteLine(CurrentNodePrefixCutout);
+                    Console.WriteLine(substr);
+#endif
+                    if (CurrentNodePrefixCutout == substr) { SubstringsFoundSoFar++; }
+                    if (n.Word.CompareTo(substr) > 0) return; //you definitely wont find the substring past this point, so we end it here
+                }
 
                 FindSubstringInTree(n.Left);
                 FindSubstringInTree(n.Right);
