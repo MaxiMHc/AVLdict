@@ -1,4 +1,4 @@
-﻿//#define VERBOSE
+﻿#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -212,22 +212,25 @@ namespace AVLdict
             }
             //after the loop has finished, we're definitely on a node whose word is after the substring in the alphabetical order
 
-            if (currentNode.Parent!=null && currentNode.Parent.Word.Contains(substr)) SubstringsFoundSoFar++;
+            //if (currentNode.Parent!=null && currentNode.Parent.Word.Contains(substr)) SubstringsFoundSoFar++;
 
 
             void FindSubstringInTree(Node n) { //my function now TriHard. searches for substring from the optimal node to start and stops when it definitely wont encounter the substring anymore
                 String CurrentNodePrefixCutout;
                 if (n == null) return;
-                if (currentNode.Word.Length >= substr.Length) currentNode.Word.Substring(0, substr.Length - 2);
-                if (currentNode.Word.Contains(substr)) SubstringsFoundSoFar++;
-                if (currentNode.Word.CompareTo(substr) >= 0) return; //you definitely wont find the substring past this point, so we end it here
+                CurrentNodePrefixCutout=n.Word.Substring(0, substr.Length);
+                if (CurrentNodePrefixCutout==null) return;
+                Console.WriteLine(CurrentNodePrefixCutout);
+                Console.WriteLine(substr);
+                if (CurrentNodePrefixCutout == substr) { SubstringsFoundSoFar++; }
+                if (n.Word.CompareTo(substr) > 0) return; //you definitely wont find the substring past this point, so we end it here
 
-                FindSubstringInTree(currentNode.Left);
-                FindSubstringInTree(currentNode.Right);
+                FindSubstringInTree(n.Left);
+                FindSubstringInTree(n.Right);
             }
 
             FindSubstringInTree(currentNode);
-            return SubstringsFoundSoFar+1;
+            return SubstringsFoundSoFar;
         }
 
         public void PrintTree(Node root)
