@@ -38,6 +38,7 @@ namespace AVLdict
                 {
                     parent.Left = newNode;
                     newNode.Parent = parent;
+                    CalculateWeights(newNode, 1);
                 }
                 else
                 {
@@ -50,10 +51,58 @@ namespace AVLdict
                 {
                     parent.Right = newNode;
                     newNode.Parent = parent;
+                    CalculateWeights(newNode, 1);
                 }
                 else
                 {
                     AddToTree(parent.Right, newNode);
+                }
+            }
+        }
+
+        private void CalculateWeights(Node n, int change)
+        {
+            while (n != Root)
+            {
+                if (n.Word.CompareTo(n.Parent.Word) > 0)
+                {
+                    n = n.Parent;
+                    n.Weight -= change;
+                }
+                else
+                {
+                    n = n.Parent;
+                    n.Weight += change;
+                }
+                if (change == 1 && n.Weight == 0)
+                {
+                    break;
+                }
+                if (change == -1 && (n.Weight == -1 || n.Weight == 1))
+                {
+                    break;
+                }
+                if (n.Weight == 2)
+                {
+                    if (n.Left.Weight == 1)
+                    {
+                         Console.WriteLine("RR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
+                    }
+                    else
+                    {
+                        Console.WriteLine("LR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
+                    }
+                }
+                if (n.Weight == -2)
+                {
+                    if (n.Right.Weight == -1)
+                    {
+                        Console.WriteLine("LL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
+                    }
+                    else
+                    {
+                        Console.WriteLine("RL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
+                    }
                 }
             }
         }
@@ -148,6 +197,8 @@ namespace AVLdict
                     NodeToRemove.Parent.Right = NodeInPlace;
                 }
             }
+
+            CalculateWeights(NodeToRemove, -1);
 
             return true;
         }

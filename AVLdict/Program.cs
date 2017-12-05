@@ -52,6 +52,7 @@ namespace AVLdict
                     if (command == 'W') //the add command
                     {
                         dict.Add(argument);
+                        dict.PrintTree(dict.Root);
                     }
                     else if (command == 'U') //the delete command
                     {
@@ -82,9 +83,9 @@ namespace AVLdict
 
 
             
-            String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
+            //String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
 
-            resolveStrings(words_unprocessed); //all the magic happens here
+            //resolveStrings(words_unprocessed); //all the magic happens here
 
             dict.Add("4");
             dict.Add("2");
@@ -94,7 +95,11 @@ namespace AVLdict
             dict.Add("5");
             dict.Add("9");
             dict.Add("6");
-            Console.WriteLine(dict.CountSubstr("ma"));
+            //Console.WriteLine(dict.CountSubstr("ma"));
+            dict.PrintTree(dict.Root);
+            dict.Remove("2");
+            dict.PrintTree(dict.Root);
+            dict.Remove("3");
             dict.PrintTree(dict.Root);
 
             //dict.Add("1");

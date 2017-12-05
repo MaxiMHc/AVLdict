@@ -12,6 +12,7 @@ namespace AVLdict
         public Node Left { get; set; }
         public Node Right { get; set; }
         public string Word { get; set; }
+        public int Weight { get; set; }
 
         public Node()
         {
