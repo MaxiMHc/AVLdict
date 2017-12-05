@@ -294,3 +294,9 @@ AVLdict/Program.exe
 .vscode/tasks.json
 AVLdict/Program.exe
 Program.exe
+
+#Include testing .txt files
+!ll.txt
+!lr.txt
+!rl.txt
+!rr.txt

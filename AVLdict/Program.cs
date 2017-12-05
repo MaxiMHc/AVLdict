@@ -1,4 +1,4 @@
-﻿#define VERBOSE
+﻿//#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +73,7 @@ namespace AVLdict
                     {
                         /*count nodes that start with argument and return them
                          eg. argument="ko" for dict[] = "kot", "kot", "kat" returns 2*/
+                        Console.WriteLine(argument);
                         Console.WriteLine(dict.CountSubstr(argument));
                     }
 
@@ -82,10 +83,17 @@ namespace AVLdict
 
 
             
-            String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
+            String[] words_unprocessed = System.IO.File.ReadAllLines("rl.txt");
+            /*available tests:
+             ll.txt
+             rr.txt
+             lr.txt
+             rl.txt
+             */
 
             resolveStrings(words_unprocessed); //all the magic happens here
 
+            /*
             dict.Add("4");
             dict.Add("2");
             dict.Add("7");
@@ -95,6 +103,7 @@ namespace AVLdict
             dict.Add("9");
             dict.Add("6");
             Console.WriteLine(dict.CountSubstr("ma"));
+            */
             dict.PrintTree(dict.Root);
 
             //dict.Add("1");
