@@ -261,7 +261,8 @@ namespace AVLdict
                 #if VERBOSE 
                 Console.WriteLine("going right");
                 #endif
-                currentNode = currentNode.Right; //if the current node's word is before the substring in the alphabetical order, we got to the node whose word is closer to substr
+                if(currentNode.Right!=null)
+                    currentNode = currentNode.Right; //if the current node's word is before the substring in the alphabetical order, we got to the node whose word is closer to substr
             }
             //after the loop has finished, we're definitely on a node whose word is after the substring in the alphabetical order
 
