@@ -1,4 +1,4 @@
-﻿#define VERBOSE
+﻿//#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -74,6 +74,7 @@ namespace AVLdict
                     {
                         /*count nodes that start with argument and return them
                          eg. argument="ko" for dict[] = "kot", "kot", "kat" returns 2*/
+                        Console.WriteLine(argument);
                         Console.WriteLine(dict.CountSubstr(argument));
                     }
 
@@ -82,11 +83,28 @@ namespace AVLdict
             }
 
 
-            
-            //String[] words_unprocessed = System.IO.File.ReadAllLines("in1.txt");
+            String startingDirectory = System.IO.Directory.GetCurrentDirectory(); //get dir the program starts in (usually Debug)
+            String testDirectory = System.IO.Directory.GetParent(startingDirectory).Parent.FullName; //take its grandparent (AVLdict/AVLdict)
+            testDirectory += "\\tests\\"; //add path to tests folder to it
+            //Console.WriteLine(testDirectory);
 
-            //resolveStrings(words_unprocessed); //all the magic happens here
+            /*available tests:
+            ll.txt
+            rr.txt
+            lr.txt
+            rl.txt
 
+            Just put one of those in the ReadAllLines(testDirectory+HEREFILENAME) line below, you don't have to specify the directory.
+            PDF thing: http://p.wi.pb.edu.pl/sites/default/files/krzysztof-ostrowski/files/drzewa_bst_avl.pdf
+            */
+
+            String[] words_unprocessed = System.IO.File.ReadAllLines(testDirectory+"rl.txt"); //change this my friend
+
+            resolveStrings(words_unprocessed); //all the magic happens here
+
+            dict.PrintTree(dict.Root);
+
+            /*
             dict.Add("4");
             dict.Add("2");
             dict.Add("7");
@@ -102,6 +120,8 @@ namespace AVLdict
             dict.Remove("3");
             dict.PrintTree(dict.Root);
 
+            Console.WriteLine(dict.CountSubstr("ma"));
+            */
             //dict.Add("1");
             //dict.Add("11");
             //dict.Add("23");
