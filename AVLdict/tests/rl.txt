@@ -1,8 +1,4 @@
-7
-W p(A)
-W a(1)
-W w(B)
-W s(C)
-W t(3)
-W r(2)
-W x(4)
+3
+W da(A)
+W ea(B)
+W db(3)

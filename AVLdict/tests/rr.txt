@@ -1,8 +1,4 @@
-7
-W da(A)
-W ca(B)
-W db(3)
-W brat(1)
-W bor(1)
-W bur(1)
-W caa(2)
+3
+W ed(A)
+W eb(B)
+W d(1)

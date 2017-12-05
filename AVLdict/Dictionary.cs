@@ -110,7 +110,7 @@ namespace AVLdict
         public bool Remove(string word)
         {
             Node NodeToRemove = Find(word);
-            Node NodeInPlace;
+            Node NodeInPlace = null;
 
             // not found
             if (NodeToRemove == null)
@@ -167,8 +167,11 @@ namespace AVLdict
                 NodeInPlace.Word = NodeToRemove.Word;
             }
 
+            if(NodeInPlace == null)
+                CalculateWeights(NodeToRemove, -1);
+
             // replace
-            if(NodeToRemove.Right != null)
+            if (NodeToRemove.Right != null)
             {
                 NodeInPlace = NodeToRemove.Right;
             }
@@ -197,8 +200,6 @@ namespace AVLdict
                     NodeToRemove.Parent.Right = NodeInPlace;
                 }
             }
-
-            CalculateWeights(NodeToRemove, -1);
 
             return true;
         }
@@ -296,7 +297,7 @@ namespace AVLdict
             string[] Tree = new string[Constants.MaxTreeDisplay+1];
             int level = MapTree(root, Tree, 1);
 
-            //Console.WriteLine(level);
+            if (level == 0) return;
 
             int power = Constants.MaxTreeDisplayPower;
             while ((level >> power) == 0) --power;

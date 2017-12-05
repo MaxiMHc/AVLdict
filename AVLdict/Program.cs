@@ -41,7 +41,7 @@ namespace AVLdict
                     char command = getCommand(inputline); //this is "A", the [command]
                     String argument = snipCommand(inputline); //this is "elephant", the [word]
 
-#if (VERBOSE)
+#if VERBOSE
                     Console.WriteLine(argument); //debug
 #endif
 
@@ -52,7 +52,6 @@ namespace AVLdict
                     if (command == 'W') //the add command
                     {
                         dict.Add(argument);
-                        dict.PrintTree(dict.Root);
                     }
                     else if (command == 'U') //the delete command
                     {
@@ -98,12 +97,29 @@ namespace AVLdict
             PDF thing: http://p.wi.pb.edu.pl/sites/default/files/krzysztof-ostrowski/files/drzewa_bst_avl.pdf
             */
 
-            String[] words_unprocessed = System.IO.File.ReadAllLines(testDirectory+"rl.txt"); //change this my friend
+            Console.Write("Command: ");
+            string consoleinput = Console.ReadLine();
+
+            if(consoleinput == "VERBOSE")
+            {
+                string[] commands = new string[2];
+                commands[0] = "1";
+                while (true)
+                {
+                    consoleinput = Console.ReadLine();
+                    commands[1] = consoleinput;
+                    resolveStrings(commands);
+                    Console.WriteLine("\n");
+                    dict.PrintTree(dict.Root);
+                    Console.WriteLine("\n");
+                }
+            }
+
+            String[] words_unprocessed = System.IO.File.ReadAllLines(testDirectory + consoleinput + ".txt"); //change this my friend
 
             resolveStrings(words_unprocessed); //all the magic happens here
 
             dict.PrintTree(dict.Root);
-
             /*
             dict.Add("4");
             dict.Add("2");
@@ -115,13 +131,14 @@ namespace AVLdict
             dict.Add("6");
             //Console.WriteLine(dict.CountSubstr("ma"));
             dict.PrintTree(dict.Root);
-            dict.Remove("2");
+            dict.Remove("7");
             dict.PrintTree(dict.Root);
-            dict.Remove("3");
+            //dict.Remove("3");
             dict.PrintTree(dict.Root);
-
-            Console.WriteLine(dict.CountSubstr("ma"));
             */
+
+            //Console.WriteLine(dict.CountSubstr("ma"));
+            
             //dict.Add("1");
             //dict.Add("11");
             //dict.Add("23");
