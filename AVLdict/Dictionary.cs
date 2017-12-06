@@ -219,6 +219,98 @@ namespace AVLdict
             return true;
         }
 
+
+        /*Temporarily public for testing*/
+        public void addChild(Node destinationParent, Node newChild) //it's different from the Add() function in the way that it tries to add a new child directly to a node instead to a tree
+        {
+            if (newChild.Word.CompareTo(destinationParent.Word) > 0)
+            {
+                if (destinationParent.Right != null)
+                    throw new System.ArgumentException("addChild(): can't add new child to node as parent.Right is already taken. We probably don't need to implement this");
+                destinationParent.Right = newChild;
+            }
+            else
+            {
+                if (destinationParent.Left != null)
+                    throw new System.ArgumentException("addChild(): can't add new child to node as parent.Left is already taken. We probably don't need to implement this");
+                destinationParent.Left = newChild;
+
+            }
+        }
+
+        /*Temporarily public for testing*/
+        public bool transferChild(bool giveRight, Node source, Node target) //give child from one node to another (if the target node doesn't have 2 children)
+        {
+            if (target.Right != null && target.Left != null)
+            {
+                throw new System.ArgumentException("target parent has 2 children already. cant give child from " + source.Word);
+                return false;
+            }
+
+            if (giveRight) //if you want to give the right child from the source node (sourceParent)
+            {
+
+                if (target.Right.Word.CompareTo(source.Right.Word) < 0) //if target's right is bigger than the source's right
+                {
+                    target.Left = source.Right;
+                    source.Right = null;
+                    return true;
+                }
+                else
+                {
+                    target.Right = source.Right;
+                    source.Right = null;
+                    return true;
+                }
+            }
+            else //!(giveRight)
+            {
+                if (target.Right.Word.CompareTo(source.Left.Word) < 0)
+                {
+                    target.Left = source.Left;
+                    source.Left = null;
+                    return true;
+                }
+                else
+                {
+                    target.Right = source.Left;
+                    source.Left = null;
+                    return true;
+                }
+            }
+        }
+
+        public bool swapChildParent(Node node, bool leftChildBecomeParent) //makes it so one of the children of a selected node, becomes the parent of that node
+        {                                         //the swapping is done in a way so the BST structure is still correct after the swap
+            bool leftExists = (node.Left != null);
+            bool rightExists = (node.Right != null);
+            Node left = node.Left;
+            Node right = node.Right;
+            Node parent = node.Parent;
+            if (leftExists && rightExists)
+            {
+                throw new System.ArgumentException("target parent has 2 children already. cant have 3 children"); // exception PogChamp
+            }
+
+            if (leftChildBecomeParent == true)
+            {
+                addChild(left, node);
+                node.Parent = left;
+                
+
+            }
+
+#if VERBOSE //swapchild debug
+            Console.WriteLine(" Swapchild debug:");
+            Console.WriteLine(" Initial parent node:" + node.Word)
+#endif
+
+
+            return true;
+        }
+
+
+
         public bool IsInTree(string word)
         {
             Node n = Find(word);
