@@ -1,4 +1,4 @@
-﻿//#define VERBOSE
+﻿#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,29 +97,37 @@ namespace AVLdict
             PDF thing: http://p.wi.pb.edu.pl/sites/default/files/krzysztof-ostrowski/files/drzewa_bst_avl.pdf
             */
 
-            Console.Write("Command: ");
+            Console.Write("File name: ");
             string consoleinput = Console.ReadLine();
 
-            if(consoleinput == "VERBOSE")
+            String[] words_unprocessed;
+            try
             {
-                string[] commands = new string[2];
-                commands[0] = "1";
-                while (true)
-                {
-                    consoleinput = Console.ReadLine();
-                    commands[1] = consoleinput;
-                    resolveStrings(commands);
-                    Console.WriteLine("\n");
-                    dict.PrintTree(dict.Root);
-                    Console.WriteLine("\n");
-                }
+                words_unprocessed = System.IO.File.ReadAllLines(testDirectory + consoleinput + ".txt");
+                resolveStrings(words_unprocessed); //all the magic happens here
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                Console.WriteLine("Nie ma takiego pliku.");
             }
 
-            String[] words_unprocessed = System.IO.File.ReadAllLines(testDirectory + consoleinput + ".txt"); //change this my friend
-
-            resolveStrings(words_unprocessed); //all the magic happens here
-
+#if VERBOSE
             dict.PrintTree(dict.Root);
+            
+            string[] commands = new string[2];
+            commands[0] = "1";
+            while (true)
+            {
+                Console.Write("Command: ");
+                consoleinput = Console.ReadLine();
+                commands[1] = consoleinput;
+                resolveStrings(commands);
+                Console.WriteLine("\n");
+                dict.PrintTree(dict.Root);
+                Console.WriteLine("\n");
+            }
+#endif
+
             /*
             dict.Add("4");
             dict.Add("2");
@@ -138,7 +146,7 @@ namespace AVLdict
             */
 
             //Console.WriteLine(dict.CountSubstr("ma"));
-            
+
             //dict.Add("1");
             //dict.Add("11");
             //dict.Add("23");

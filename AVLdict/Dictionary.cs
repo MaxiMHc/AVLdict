@@ -1,4 +1,4 @@
-﻿//#define VERBOSE
+﻿#define VERBOSE
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,6 +64,13 @@ namespace AVLdict
         {
             while (n != Root)
             {
+                if (n.Word == "")   // swap case
+                {
+                    if (n.Parent.Right == null)
+                        n.Word = ((char)(n.Parent.Word.LastOrDefault() + 1)).ToString();
+                    else
+                        n.Word = ((char)(n.Parent.Word.LastOrDefault() - 1)).ToString();
+                }
                 if (n.Word.CompareTo(n.Parent.Word) > 0)
                 {
                     n = n.Parent;
@@ -86,22 +93,30 @@ namespace AVLdict
                 {
                     if (n.Left.Weight == 1)
                     {
-                         Console.WriteLine("RR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
+#if VERBOSE
+                        Console.WriteLine("RR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
+#endif
                     }
                     else
                     {
+#if VERBOSE
                         Console.WriteLine("LR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
+#endif
                     }
                 }
                 if (n.Weight == -2)
                 {
                     if (n.Right.Weight == -1)
                     {
+#if VERBOSE
                         Console.WriteLine("LL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
+#endif
                     }
                     else
                     {
+#if VERBOSE
                         Console.WriteLine("RL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
+#endif
                     }
                 }
             }
@@ -111,6 +126,7 @@ namespace AVLdict
         {
             Node NodeToRemove = Find(word);
             Node NodeInPlace = null;
+            //bool has2Children = false;
 
             // not found
             if (NodeToRemove == null)
@@ -141,7 +157,6 @@ namespace AVLdict
                     return true;
                 }
                 // non-root case; no action needed
-                //NodeInPlace = NodeToRemove;
             }
             // 2 children
             else
@@ -165,10 +180,8 @@ namespace AVLdict
                     }
                 }
                 NodeInPlace.Word = NodeToRemove.Word;
+                NodeToRemove.Word = "";
             }
-
-            if(NodeInPlace == null)
-                CalculateWeights(NodeToRemove, -1);
 
             // replace
             if (NodeToRemove.Right != null)
@@ -200,6 +213,8 @@ namespace AVLdict
                     NodeToRemove.Parent.Right = NodeInPlace;
                 }
             }
+            
+            CalculateWeights(NodeToRemove, -1);
 
             return true;
         }
@@ -313,8 +328,14 @@ namespace AVLdict
 
                 for (int j = i; j < i * 2; j++)
                 {
-                    if (Tree[j] == null) Tree[j] = "x";
+                    if (Tree[j] == null) Tree[j] = "*";
                     Console.Write(Tree[j] + " ");
+#if VERBOSE
+                    if (Tree[j] != "*")
+                        Console.Write("(" + Find(Tree[j]).Weight + ")" + " ");
+                    else
+                        Console.Write("(-) ");
+#endif
 
                     for (int k = 0; k < (level / i / 2) - 1; k++) { Console.Write("  "); }
                 }
