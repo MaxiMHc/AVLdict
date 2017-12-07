@@ -13,7 +13,7 @@ namespace AVLdict
     {
         public const int MaxTreeDisplay = 128;
         public const int MaxTreeDisplayPower = 7;
-        public const bool WeTestingNow = true;
+        public const bool WeTestingNow = false;
     }
     class Dictionary
     {
@@ -108,6 +108,7 @@ namespace AVLdict
                         Console.WriteLine("LR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
 #endif
                     }
+                    break;
                 }
                 if (n.Weight == -2)
                 {
@@ -124,6 +125,7 @@ namespace AVLdict
                         Console.WriteLine("RL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
 #endif
                     }
+                    break;
                 }
             }
         }
@@ -291,17 +293,47 @@ namespace AVLdict
 
             bool leftExists = (node.Left != null);
             bool rightExists = (node.Right != null);
+            int maxWeightOfChildren; //max(left.Left.Left and left.Right.Right) 
             Node left = node.Left;
             Node right = node.Right;
             Node parent = node.Parent;
-            if (leftExists && rightExists)
+            
+            if (leftExists && rightExists) //need additional logic here
             {
-                throw new System.ArgumentException("target parent has 2 children already. cant have 3 children"); // exception PogChamp
+                //throw new System.ArgumentException("target parent has 2 children already. cant have 3 children"); // exception PogChamp
+                //wow this exception is 
             }
+
+            // 1. take shortest subtree
+            Node shortestSubtree=null; //is never null after below statements (CountWeights handles proper if statements so that left/right.weight is always >2)
+            if (left.Weight > 1)
+            {
+                shortestSubtree = left.Right;
+                left.Right = null;
+            }
+
+            else if (left.Weight < -1)
+            {
+                shortestSubtree = left.Left;
+                left.Left = null;
+            }
+
+            // 2.add it to the nonswapped (node.Right in this case)
+            if(shortestSubtree!=null)addChild(node.Right, shortestSubtree);
+
+
+
+
 
             if (leftChildBecomeParent == true)
             {
+                
                 addChild(left, node);
+                if (node != Root)
+                {
+                    left.Parent = node.Parent;
+                    node.Parent.Left = left;
+                }
                 node.Parent = left;
                 node.Left = null;
                 if (node == Root) { Root = left; }
@@ -314,11 +346,18 @@ namespace AVLdict
             else
             {
                 addChild(right, node);
+                if (node != Root)
+                {
+                    right.Parent = node.Parent;
+                    node.Parent.Right = right;
+                }
                 node.Parent = right;
                 node.Right = null;
                 if (node == Root) { Root = right; }
+
                 node.Weight = RecalculateWeights(node);
                 right.Weight = RecalculateWeights(right);
+
 
             }
 
@@ -375,7 +414,9 @@ namespace AVLdict
                 newRightWeight = n.Right.Weight;
 
             total = newLeftWeight + newRightWeight;
+#if VERBOSE
             Console.WriteLine(newLeftWeight + " + " + newRightWeight + " = " + total);
+#endif
             return total;
         }
 
