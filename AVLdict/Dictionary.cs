@@ -13,6 +13,7 @@ namespace AVLdict
     {
         public const int MaxTreeDisplay = 128;
         public const int MaxTreeDisplayPower = 7;
+        public const bool WeTestingNow = true;
     }
     class Dictionary
     {
@@ -93,9 +94,13 @@ namespace AVLdict
                 {
                     if (n.Left.Weight == 1)
                     {
+
+                        
 #if VERBOSE
                         Console.WriteLine("RR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
 #endif
+
+                        if(Constants.WeTestingNow)swapChildParent(n, true); //doing RR
                     }
                     else
                     {
@@ -111,6 +116,7 @@ namespace AVLdict
 #if VERBOSE
                         Console.WriteLine("LL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
 #endif
+                        if(Constants.WeTestingNow)swapChildParent(n, false); //doing LL
                     }
                     else
                     {
@@ -282,6 +288,7 @@ namespace AVLdict
 
         public bool swapChildParent(Node node, bool leftChildBecomeParent) //makes it so one of the children of a selected node, becomes the parent of that node
         {                                         //the swapping is done in a way so the BST structure is still correct after the swap
+
             bool leftExists = (node.Left != null);
             bool rightExists = (node.Right != null);
             Node left = node.Left;
@@ -296,13 +303,60 @@ namespace AVLdict
             {
                 addChild(left, node);
                 node.Parent = left;
-                
+                node.Left = null;
+                if (node == Root) { Root = left; }
+
+                node.Weight = RecalculateWeights(node);
+                left.Weight = RecalculateWeights(left);
+               
+            }
+
+            else
+            {
+                addChild(right, node);
+                node.Parent = right;
+                node.Right = null;
+                if (node == Root) { Root = right; }
+                node.Weight = RecalculateWeights(node);
+                right.Weight = RecalculateWeights(right);
 
             }
 
-#if VERBOSE //swapchild debug
+#if VERBOSESWAP
+            //************SWAPCHILD DEBUG*****************
+            bool newLeftNull = (left.Left == null);
+            bool newRightNull = (left.Right == null);
+
+            bool oldLeftNull = (node.Left == null);
+            bool oldRightNull = (node.Right == null);
+
             Console.WriteLine(" Swapchild debug:");
-            Console.WriteLine(" Initial parent node:" + node.Word)
+            Console.WriteLine(" Initial parent node:" + node.Word);
+            Console.WriteLine(" New parent:");
+            Console.Write(" L: ");
+            if (!newLeftNull)
+                Console.Write(" " +left.Left.Word);
+            else Console.Write("    null");
+
+            Console.Write(" R: ");
+            if (!newRightNull)
+                Console.Write(left.Right.Word+"\n");
+            else Console.Write("null \n");
+
+            Console.WriteLine(" Old parent:");
+            Console.Write(" L: ");
+            if (!oldLeftNull)
+                Console.Write(node.Left.Word);
+            else Console.Write("null ");
+
+            Console.Write(" R: ");
+            if (!oldRightNull)
+                Console.Write(node.Right.Word);
+            else Console.Write("null\n");
+
+            Console.WriteLine(" root: " + Root.Word);
+            Console.WriteLine("\n");
+
 #endif
 
 
@@ -310,6 +364,20 @@ namespace AVLdict
         }
 
 
+        private int RecalculateWeights(Node n)
+        {
+            int newLeftWeight = 0;
+            int newRightWeight = 0;
+            int total;
+            if (n.Left != null)
+                newLeftWeight = n.Left.Weight;
+            if (n.Right != null)
+                newRightWeight = n.Right.Weight;
+
+            total = newLeftWeight + newRightWeight;
+            Console.WriteLine(newLeftWeight + " + " + newRightWeight + " = " + total);
+            return total;
+        }
 
         public bool IsInTree(string word)
         {
@@ -366,9 +434,9 @@ namespace AVLdict
             {
                 currentNodePrecedesSubstr = currentNode.Word.CompareTo(substr) < 0;
                 currentNodeContainsSubstr = currentNode.Word.Contains(substr);
-                #if VERBOSE 
+#if VERBOSE
                 Console.WriteLine("going right");
-                #endif
+#endif
                 if(currentNode.Right!=null)
                     currentNode = currentNode.Right; //if the current node's word is before the substring in the alphabetical order, we got to the node whose word is closer to substr
             }

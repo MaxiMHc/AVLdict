@@ -112,19 +112,31 @@ namespace AVLdict
             }
 
 #if VERBOSE
+            //FIRST CASE (wrong result)
+            //1. Run the program with Constants.WeTestingNow=true (change it in Dictionary.cs)
+
+
+            //SECOND CASE
+            //1. Set Constants.WeTestingNow to false
+            //2. Uncomment below line with the swapChildParent
+            //3. Run program
+            
+            //dict.swapChildParent(dict.Root, true); //this line is the same thing as what's inside CalculateWeights (line 103 Dictionary.cs)
             dict.PrintTree(dict.Root);
             
+
             string[] commands = new string[2];
             commands[0] = "1";
+
+
             while (true)
             {
                 Console.Write("Command: ");
                 consoleinput = Console.ReadLine();
                 commands[1] = consoleinput;
-                resolveStrings(commands);
                 Console.WriteLine("\n");
                 dict.PrintTree(dict.Root);
-                Console.WriteLine("\n");
+                
             }
 #endif
 
