@@ -1,18 +1,17 @@
 ﻿#define VERBOSE
+#define VERBOSEWEIGHTS
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 namespace AVLdict
 {
     class Constants
     {
-        public const int MaxTreeDisplay = 128;
         public const int MaxTreeDisplayPower = 7;
+        public const int MaxTreeDisplay = 1 << MaxTreeDisplayPower;
         public const bool WeTestingNow = false;
     }
     class Dictionary
@@ -120,8 +119,9 @@ namespace AVLdict
 #if VERBOSE
                         Console.WriteLine("LR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
 #endif
+                        LRRotation(n);
                     }
-                    break;
+                    //break;
                 }
                 if (n.Weight == -2)
                 {
@@ -131,14 +131,23 @@ namespace AVLdict
                         Console.WriteLine("LL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
 #endif
                         //if(Constants.WeTestingNow)swapChildParent(n, false); //doing LL
-                        LLRotarion(n);
+                        LLRotation(n);
                     }
                     else
                     {
 #if VERBOSE
                         Console.WriteLine("RL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
 #endif
+                        RLRotation(n);
                     }
+                    //break;
+                }
+                if (change == 1 && n.Weight == 0)
+                {
+                    break;
+                }
+                if (change == -1 && (n.Weight == -1 || n.Weight == 1))
+                {
                     break;
                 }
             }
@@ -272,13 +281,9 @@ namespace AVLdict
             Node II = B.Right;
             Node III = A.Right;
 
-            // Weights
-            A.Weight = 0;
-            B.Weight = 0;
-
             // I
             B.Left = I;
-            I.Parent = B;
+            if (I != null) I.Parent = B;
 
             // II
             A.Left = II;
@@ -298,20 +303,28 @@ namespace AVLdict
             if (AParent == null)
             {
                 Root = B;
-                return;
-            }
-            // A non-root case
-            if (isLeft)
-            {
-                AParent.Left = B;
             }
             else
             {
-                AParent.Right = B;
+                // A non-root case
+                if (isLeft)
+                {
+                    AParent.Left = B;
+                }
+                else
+                {
+                    AParent.Right = B;
+                }
             }
+
+            // Weights
+            //A.Weight = (II == null ? -1 : II.Weight) + (III == null ? 1 : III.Weight);
+            //B.Weight = (I == null ? -1 : I.Weight) + (I == null ? 1 : I.Weight);
+            A.Weight = 0;
+            B.Weight = 0;
         }
 
-        private void LLRotarion(Node A)
+        private void LLRotation(Node A)
         {
             Node AParent = A.Parent;
             bool isLeft = false;
@@ -324,10 +337,6 @@ namespace AVLdict
             Node II = B.Left;
             Node III = B.Right;
 
-            // Weights
-            A.Weight = 0;
-            B.Weight = 0;
-
             // I
             A.Left = I;
             if (I != null) I.Parent = A;
@@ -338,7 +347,7 @@ namespace AVLdict
 
             // III
             B.Right = III;
-            III.Parent = B;
+            if (III != null) III.Parent = B;
 
             // B <-> A
             B.Left = A;
@@ -350,16 +359,58 @@ namespace AVLdict
             if (AParent == null)
             {
                 Root = B;
-                return;
-            }
-            // A non-root case
-            if (isLeft)
-            {
-                AParent.Left = B;
             }
             else
             {
-                AParent.Right = B;
+                // A non-root case
+                if (isLeft)
+                {
+                    AParent.Left = B;
+                }
+                else
+                {
+                    AParent.Right = B;
+                }
+            }
+
+            // Weights
+            //A.Weight = (I == null ? -1 : I.Weight) + (II == null ? 1 : II.Weight);
+            //B.Weight = (A == null ? -1 : A.Weight) + (III == null ? 1 : III.Weight);
+            A.Weight = 0;
+            B.Weight = 0;
+        }
+
+        private void LRRotation(Node A)
+        {
+            Node B = A.Left;
+            int CWeight = B.Right.Weight;
+            LLRotation(B);
+            RRRotation(A);
+
+            if (CWeight == 1)
+            {
+                A.Weight = -1;
+            }
+            if (CWeight == -1)
+            {
+                B.Weight = 1;
+            }
+        }
+
+        private void RLRotation(Node A)
+        {
+            Node B = A.Right;
+            int CWeight = B.Right.Weight;
+            RRRotation(B);
+            LLRotation(A);
+
+            if (CWeight == 1)
+            {
+                B.Weight = -1;
+            }
+            if (CWeight == -1)
+            {
+                A.Weight = 1;
             }
         }
 
@@ -666,7 +717,7 @@ namespace AVLdict
                 {
                     if (Tree[j] == null) Tree[j] = "*";
                     Console.Write(Tree[j] + " ");
-#if VERBOSE
+#if VERBOSEWEIGHTS
                     if (Tree[j] != "*")
                         Console.Write("(" + Find(Tree[j]).Weight + ")" + " ");
                     else
