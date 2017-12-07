@@ -100,7 +100,8 @@ namespace AVLdict
                         Console.WriteLine("RR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
 #endif
 
-                        if(Constants.WeTestingNow)swapChildParent(n, true); //doing RR
+                        //if(Constants.WeTestingNow)swapChildParent(n, true); //doing RR
+                        RRRotarion(n);
                     }
                     else
                     {
@@ -108,6 +109,7 @@ namespace AVLdict
                         Console.WriteLine("LR Rotation: Parent \"" + n.Word + "\", Child \"" + n.Left.Word + "\"");
 #endif
                     }
+                    break;
                 }
                 if (n.Weight == -2)
                 {
@@ -124,6 +126,7 @@ namespace AVLdict
                         Console.WriteLine("RL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
 #endif
                     }
+                    break;
                 }
             }
         }
@@ -223,6 +226,58 @@ namespace AVLdict
             CalculateWeights(NodeToRemove, -1);
 
             return true;
+        }
+
+        private void RRRotarion(Node A)
+        {
+            Node AParent = A.Parent;
+            bool isLeft = false;
+            if (AParent != null)
+            {
+                isLeft = A.Parent.Left == A ? true : false;
+            }
+            Node B = A.Left;
+            Node I = B.Left;
+            Node II = B.Right;
+            Node III = A.Right;
+
+            // Weights
+            A.Weight = 0;
+            B.Weight = 0;
+
+            // I
+            B.Left = I;
+            I.Parent = B;
+
+            // II
+            A.Left = II;
+            if(II != null) II.Parent = A;
+
+            // III
+            A.Right = III;
+            if (II != null) III.Parent = A;
+
+            // B <-> A
+            B.Right = A;
+            A.Parent = B;
+
+            // rest <-> B
+            B.Parent = AParent;
+            // A is Root case
+            if (AParent == null)
+            {
+                Root = B;
+                return;
+            }
+            // A non-root case
+            if (isLeft)
+            {
+                AParent.Left = B;
+            }
+            else
+            {
+                AParent.Right = B;
+            }
         }
 
 

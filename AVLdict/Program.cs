@@ -76,6 +76,11 @@ namespace AVLdict
                         Console.WriteLine(argument);
                         Console.WriteLine(dict.CountSubstr(argument));
                     }
+#if VERBOSE
+                    Console.WriteLine("\n");
+                    dict.PrintTree(dict.Root);
+                    Console.WriteLine("\n");
+#endif
 
                 }
 
@@ -134,9 +139,9 @@ namespace AVLdict
                 Console.Write("Command: ");
                 consoleinput = Console.ReadLine();
                 commands[1] = consoleinput;
+                resolveStrings(commands);
                 Console.WriteLine("\n");
                 dict.PrintTree(dict.Root);
-                
             }
 #endif
 
