@@ -65,12 +65,24 @@ namespace AVLdict
         {
             while (n != Root)
             {
-                if (n.Word == "")   // swap case
+                if (n.Word == "|1|")     // swap case went RLLLL... or LRRRR...
                 {
                     if (n.Parent.Right == null)
-                        n.Word = ((char)(n.Parent.Word.LastOrDefault() + 1)).ToString();
+                        //n.Word = ((char)(n.Parent.Word.LastOrDefault() + 1)).ToString();
+                        n.Word = n.Parent.Word + "aaaa";
                     else
-                        n.Word = ((char)(n.Parent.Word.LastOrDefault() - 1)).ToString();
+                        //n.Word = ((char)(n.Parent.Word.LastOrDefault() - 1)).ToString();
+                        n.Word = n.Parent.Word.Substring(0, n.Parent.Word.Length - 1);
+                }
+                if (n.Word == "|R|")    // swap case went R only
+                {
+                    //n.Word = ((char)(n.Parent.Word.LastOrDefault() + 1)).ToString();
+                    n.Word = n.Parent.Word + "aaaa";
+                }
+                if (n.Word == "|L|")    // swap case went L only
+                {
+                    //n.Word = ((char)(n.Parent.Word.LastOrDefault() - 1)).ToString();
+                    n.Word = n.Parent.Word.Substring(0, n.Parent.Word.Length - 1);
                 }
                 if (n.Word.CompareTo(n.Parent.Word) > 0)
                 {
@@ -101,7 +113,7 @@ namespace AVLdict
 #endif
 
                         //if(Constants.WeTestingNow)swapChildParent(n, true); //doing RR
-                        RRRotarion(n);
+                        RRRotation(n);
                     }
                     else
                     {
@@ -118,7 +130,8 @@ namespace AVLdict
 #if VERBOSE
                         Console.WriteLine("LL Rotation: Parent \"" + n.Word + "\", Child \"" + n.Right.Word + "\"");
 #endif
-                        if(Constants.WeTestingNow)swapChildParent(n, false); //doing LL
+                        //if(Constants.WeTestingNow)swapChildParent(n, false); //doing LL
+                        LLRotarion(n);
                     }
                     else
                     {
@@ -171,13 +184,16 @@ namespace AVLdict
             else
             {
                 // find replacement; RLLLL... or LRRRR...
+                bool wentDeeper = false, wentDeeperR = false;
                 NodeInPlace = NodeToRemove;
                 if (NodeToRemove.Right != null)
                 {
                     NodeToRemove = NodeToRemove.Right;
+                    wentDeeperR = true;
                     while (NodeToRemove.Left != null)
                     {
                         NodeToRemove = NodeToRemove.Left;
+                        wentDeeper = true;
                     }
                 }
                 else
@@ -186,10 +202,25 @@ namespace AVLdict
                     while (NodeToRemove.Right != null)
                     {
                         NodeToRemove = NodeToRemove.Right;
+                        wentDeeper = true;
                     }
                 }
                 NodeInPlace.Word = NodeToRemove.Word;
-                NodeToRemove.Word = "";
+                if (!wentDeeper)
+                {
+                    if (wentDeeperR)
+                    {
+                        NodeToRemove.Word = "|R|";
+                    }
+                    else
+                    {
+                        NodeToRemove.Word = "|L|";
+                    }
+                }
+                else
+                {
+                    NodeToRemove.Word = "|1|";
+                }
             }
 
             // replace
@@ -228,7 +259,7 @@ namespace AVLdict
             return true;
         }
 
-        private void RRRotarion(Node A)
+        private void RRRotation(Node A)
         {
             Node AParent = A.Parent;
             bool isLeft = false;
@@ -255,7 +286,7 @@ namespace AVLdict
 
             // III
             A.Right = III;
-            if (II != null) III.Parent = A;
+            if (III != null) III.Parent = A;
 
             // B <-> A
             B.Right = A;
@@ -280,6 +311,57 @@ namespace AVLdict
             }
         }
 
+        private void LLRotarion(Node A)
+        {
+            Node AParent = A.Parent;
+            bool isLeft = false;
+            if (AParent != null)
+            {
+                isLeft = A.Parent.Left == A ? true : false;
+            }
+            Node B = A.Right;
+            Node I = A.Left;
+            Node II = B.Left;
+            Node III = B.Right;
+
+            // Weights
+            A.Weight = 0;
+            B.Weight = 0;
+
+            // I
+            A.Left = I;
+            if (I != null) I.Parent = A;
+
+            // II
+            A.Right = II;
+            if (II != null) II.Parent = A;
+
+            // III
+            B.Right = III;
+            III.Parent = B;
+
+            // B <-> A
+            B.Left = A;
+            A.Parent = B;
+
+            // rest <-> B
+            B.Parent = AParent;
+            // A is Root case
+            if (AParent == null)
+            {
+                Root = B;
+                return;
+            }
+            // A non-root case
+            if (isLeft)
+            {
+                AParent.Left = B;
+            }
+            else
+            {
+                AParent.Right = B;
+            }
+        }
 
         /*Temporarily public for testing*/
         public void addChild(Node destinationParent, Node newChild) //it's different from the Add() function in the way that it tries to add a new child directly to a node instead to a tree
